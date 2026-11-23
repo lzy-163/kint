@@ -163,11 +163,11 @@ jobs:
         if: steps.vendor-caches.outputs.cache-hit != 'true'
       - run: sudo systemctl start mysql # Only needed for 8.1
       - run: php ./vendor/bin/phpunit --no-coverage tests
-        if: '!matrix.phar'
+        if: matrix.phar == ''
         env:
           MYSQLI_HOST: localhost:${{ job.services.mysql.ports['3306'] }}
       - run: php ./vendor/bin/phpunit --no-coverage --prepend ./build/kint.phar tests
-        if: matrix.phar
+        if: matrix.phar != ''
         env:
           KINT_PHAR_TEST: 1
           MYSQLI_HOST: localhost:${{ job.services.mysql.ports['3306'] }}
